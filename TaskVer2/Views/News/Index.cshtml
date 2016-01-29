@@ -1,0 +1,100 @@
+﻿
+@{
+
+    ViewBag.Title = "Index";
+
+
+    //   string[] Cat = new string[ViewBag.Cat.Length];
+    string[] Cat = ViewBag.Cat;// массив категорий
+
+
+    int Newscount = 1;// кол-во новостей под каждой темой
+    int ic = 0;// счетчик новостей
+    int catID = 0;// счетчик номера записи
+
+}
+
+<div class="jumbotron">
+    <h1>News Only</h1>
+    <p class="lead">News only and nothing else...</p>
+
+
+</div>
+         <ul class="breadcrumb">        
+            @for (int i = 0; i < Cat.Length; i++)
+            {
+                <li class="active">
+                        @Html.ActionLink(Cat[i], "NewsByCategory", new { id = i }, new { @style = "color:black; text-decoration-color:none" })
+                </li>
+            }
+         </ul>
+
+<div style="background-color:black" class="row">
+    <div>
+        <h1 class="page-header" style="color:whitesmoke;  margin:20px; text-decoration-color:none">
+            All news
+        </h1>
+    </div>
+    <div style="color:whitesmoke;  margin:20px; text-decoration:none">
+        @Html.ActionLink("<< Back то all news", "index", new { }, new { @class = "button", @style = "color:black;   text-decoration:none" })
+    </div>
+</div>
+
+
+                <div>
+                    @for (int rows = 0; rows <= (int)(Cat.Length / 3); rows++)//соличество строк исходя из количества категорий
+                    {
+                        <div class="row">
+                            <hr>
+
+                            @for (int col = 0; col <= 2; col++)
+                            {
+                                if (catID == Cat.Length) { break; }// если записей меньше трех
+                                <div class="col-md-4">
+
+
+
+                                    <div style="background-color:black; color:whitesmoke">
+                                        <h1 >
+                                            @Html.ActionLink(Cat[catID], "NewsByCategory", new { id = catID }, new { @style = "color:whitesmoke; margin-left:20px; margin:5px; text-decoration:none" })
+                                        </h1>
+                                    </div>
+
+                                    @foreach (var node in ViewBag.News)
+                        {
+                            if (node.category == Cat[catID])
+                            {
+                                ic++;
+                                            <div style=" background-color:lightgrey">
+                                                <h3 style="margin:20px;">@node.title</h3>
+                                            </div>
+                                            <div>
+                                                <p style="margin:20px">@node.Description</p>
+                                                <tt style="margin-left:20px">Опубликовано @node.pubDate.ToString("d MMMM yyyy")</tt>
+                                                <a class="label label-default" style="text-decoration:none"  href="@node.link">Источник</a>
+                                            </div>
+                                        }
+                                        if (ic == Newscount) { ic = 0; break; }
+                                    }
+
+
+
+
+
+
+
+                                </div>
+                                catID++;//переходим к следующей категории
+                            }
+
+                        </div>
+                    }
+
+
+
+
+
+
+
+
+                </div>
